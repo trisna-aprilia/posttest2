@@ -1,0 +1,115 @@
+from prettytable import PrettyTable
+
+produk = PrettyTable()
+produk.field_names = ["nama produk", "harga"]
+daftar_produk = [
+    ['brush set', '145000'],
+    ['make up set', '167000'],
+    ['pouch make up', '34500']
+]
+
+for p in range(len(daftar_produk)):
+    produk.add_row([daftar_produk[p][0], daftar_produk[p][1]])
+
+def menu_utama():
+    while True:
+        print("Menu Utama")
+        print("[1] Menu Admin")
+        print("[2] Menu Pembeli")
+        print("[3] Keluar")
+        choice = input("Pilihan Anda: ")
+        if choice == "1":
+            menu_admin()
+        elif choice == "2":
+            menu_pembeli()
+        elif choice == "3":
+            print("Terima kasih! Sampai jumpa.")
+            break
+        else:
+            print("Pilihan Anda salah.")
+
+def menu_admin():
+    username = input("Username: ")
+    password = input("Password: ")
+    if username == "admin" and password == "akuadmin":
+        while True:
+            print("===============TOKO KOSMETIK================")
+            print("[1] Tampil Data Kosmetik")
+            print("[2] Tambah Data Kosmetik")
+            print("[3] Edit Data Kosmetik")
+            print("[4] Hapus Data Kosmetik")
+            print("[5] Keluar dari Menu Admin")
+            print("============================================")
+            print()
+            pilihan = input("Pilihan Anda: ")
+            if pilihan == "1":
+                print("Tampil data kosmetik")
+                print(produk)
+            elif pilihan == "2":
+                print("Tambah data kosmetik")
+                nama_produk = input("Masukkan nama produk: ")
+                harga = input("Masukkan harga produk: ")
+                daftar_produk.append([nama_produk, harga])
+                produk.add_row([nama_produk, harga])
+                print("Data berhasil ditambahkan.")
+            elif pilihan == "3":
+                print("Edit data kosmetik")
+                nama_produk = input("Masukkan nama produk yang ingin diubah: ")
+                found = False
+                for id, item in enumerate(daftar_produk):
+                    if item[0] == nama_produk:
+                        new_harga = input("Masukkan harga baru: ")
+                        daftar_produk[id][1] = new_harga
+                        produk.clear_rows()
+                        for product in daftar_produk:
+                            produk.add_row(product)
+                        print("Data berhasil diubah.")
+                        found = True
+                        break
+                if not found:
+                    print("Produk tidak ditemukan.")
+            elif pilihan == "4":
+                print("Hapus data kosmetik")
+                nama_produk = input("Masukkan nama produk yang ingin dihapus: ")
+                found = False
+                for id, item in enumerate(daftar_produk):
+                    if item[0] == nama_produk:
+                        del daftar_produk[id]
+                        produk.clear_rows()
+                        for product in daftar_produk:
+                            produk.add_row(product)
+                        print("Data berhasil dihapus.")
+                        found = True
+                        break
+                if not found:
+                    print("Produk tidak ditemukan.")
+            elif pilihan == "5":
+                print("Keluar dari menu admin.")
+                break
+            else:
+                print("Pilihan Anda salah.")
+    else:
+        print("Username atau password salah.")
+
+def menu_pembeli():
+    while True:
+        print("Menu Pembeli")
+        print(produk)
+        pilihan = input("Masukkan produk yang ingin dibeli (nama produk atau 'selesai' untuk keluar): ")
+        
+        if pilihan.lower() == 'selesai':
+            print("Terima kasih! Anda telah selesai berbelanja.")
+            break
+        
+        found = False
+        for item in daftar_produk:
+            if item[0] == pilihan:
+                found = True
+                print(f"Anda telah memilih {item[0]} dengan harga {item[1]}.")
+                break
+        
+        if not found:
+            print("Produk tidak ditemukan.")
+
+if __name__ == "__main__":
+    menu_utama()
